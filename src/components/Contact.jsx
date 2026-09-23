@@ -1,8 +1,14 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, MapPin } from "lucide-react";
+import emailjs from "@emailjs/browser";
 import SocialLinks from "./ui/SocialLinks.jsx";
 import Button from "./ui/Button.jsx";
+
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+ 
 
 const initialForm = { name: "", email: "", subject: "", message: "" };
 
@@ -37,23 +43,27 @@ export default function Contact() {
 
     setStatus("loading");
 
-    // ---------------------------------------------------------------
-    // No email backend is connected yet. Wire this up to a real
-    // service before deploying, for example:
-    //   - Formspree:  POST to https://formspree.io/f/your-id
-    //   - EmailJS:    emailjs.send(serviceId, templateId, form)
-    //   - Resend:     POST to your own API route that calls Resend
-    //   - Your own API: POST to /api/contact
-    // Until then, this only simulates a submission and does not
-    // actually send anything.
-    // ---------------------------------------------------------------
     try {
-      await new Promise((resolve) => setTimeout(resolve, 900));
-      throw new Error("No email service is connected yet.");
-      // On success you would instead do:
-      // setStatus("success");
-      // setForm(initialForm);
+      if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+        throw new Error("EmailJS keys are missing — check your .env file.");
+      }
+
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: form.name,
+          from_email: form.email,
+          subject: form.subject,
+          message: form.message,
+        },
+        { publicKey: EMAILJS_PUBLIC_KEY }
+      );
+
+      setStatus("success");
+      setForm(initialForm);
     } catch (err) {
+      console.error("EmailJS send failed:", err);
       setStatus("error");
     }
   };
@@ -81,7 +91,7 @@ export default function Contact() {
 
             <div className="mt-8 space-y-4">
               <a
-                href="mailto:your-email@example.com"
+                href="mailto:ahmadmuhammadtijjani54@gmail.com"
                 className="flex items-center gap-3 text-sm text-ink/75 hover:text-amber dark:text-paper/75"
               >
                 <Mail size={18} /> ahmadmuhammadtijjani54@gmail.com
@@ -190,8 +200,7 @@ export default function Contact() {
             )}
             {status === "error" && (
               <p role="alert" className="text-sm text-red-500">
-                No email service is connected yet, so this message wasn't sent. Connect Formspree,
-                EmailJS, Resend, or your own API in src/components/Contact.jsx.
+                Something went wrong sending your message. Please try again, or email me directly.
               </p>
             )}
           </form>

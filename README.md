@@ -56,4 +56,4 @@ public/
 - No fake experience, testimonials, stats, or URLs were invented —
   placeholders are marked clearly wherever real information
   (email, social links, repo/demo URLs, CV, screenshots) is still
-  needed.
+  needed. .
