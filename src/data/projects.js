@@ -11,7 +11,7 @@ export const projects = [
     name: "Finova",
     description:
       "A modern fintech dashboard focused on digital wallet management, transactions, payments, and account functionality.",
-    images: ["/projects/finova.png", "/projects/finova-2.png", "/projects/finova-3.png"],
+    images: ["/projects/finova.png", "/projects/finova-2.png", "/projects/finova-3.png", "/projects/finova-4.png", "/projects/finova-5.png", "/projects/finova-6.png", "/projects/finova-7sss.png"],
     tech: [
       "Next.js",
       "TypeScript",
@@ -31,7 +31,7 @@ export const projects = [
       "Withdrawals",
       "Payment integration",
     ],
-    github: "#", // TODO: add real GitHub repo URL
+    github: "https://github.com/Ahmad-Teejay/finova.git", // TODO: add real GitHub repo URL
     demo: "#", // TODO: add real live demo URL
   },
   {
